@@ -1,13 +1,24 @@
 import render
+import menu
 import time
 import chess
 import sys
 
-maxFPS = 30
+maxFPS = 15
 
 #FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
-FEN = "8/8/K7/7r/6r1/8/8/2k5 w - - 0 1" #Checkmate test
-FEN = "8/8/k7/7R/6R1/8/8/K7 w - - 0 1" #Checkmate test2
+#FEN = "8/8/K7/7r/6r1/8/8/2k5 w - - 0 1" #Checkmate test
+#FEN = "8/8/k7/7R/6R1/8/8/K7 w - - 0 1" #Checkmate test2
+FEN = menu.getFEN()
+
+if FEN == None :
+    sys.exit()
+
+gameType = menu.getGameType()
+
+if gameType == None :
+    sys.exit()
+
 screen = render.init()
 
 def getPiece(FEN, x, y) :
@@ -58,8 +69,10 @@ selectedY = -1
 
 possibleEndstates = []
 
-isWhite = True
-canPlayOther = False
+if not gameType :
+    isWhite = True
+    canPlayOther = True
+
 outcome = None
 
 render.redrawScreen(screen, FEN, [selectedX, selectedY], possibleEndstates)
