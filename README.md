@@ -8,7 +8,7 @@ Chesser 2 is a simple chess game that I made using `pygame` and the `chess` modu
 
 Run the `game.pyw` file to launch the game. It should take around 2 seconds to start.
 
-Use right shift in-game to change the board [FEN ]([Forsyth–Edwards Notation - Wikipedia](https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation))string.
+Use right shift in-game to change the board [FEN](https://en.wikipedia.org/wiki/Forsyth%E2%80%93Edwards_Notation) string.
 
 
 
