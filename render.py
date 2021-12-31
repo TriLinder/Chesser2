@@ -174,6 +174,9 @@ def frame(screen, FEN, selected, moves, specialEvent) :
                 break
 
             return ["click", click_x, click_y]
+        elif event.type == pygame.KEYDOWN :
+            if event.key == pygame.K_RSHIFT :
+                return ["setFEN"]
 
     if not w == h :
         print("Resizing to 1:1")
@@ -192,6 +195,9 @@ if __name__ == "__main__" :
     FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 
     screen = init()
+    redrawScreen(screen, FEN, [-1, -1], [])
 
     while True :
-        frame(screen, FEN)
+        events = frame(screen, FEN, [-1, -1], [], "")
+        if not events == ["none"] :
+            print(events)

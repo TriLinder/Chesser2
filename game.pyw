@@ -109,7 +109,7 @@ while True :
                 board.set_fen(FEN)
 
                 if board.is_checkmate() :
-                    menu.msg("Game over! Checkmate.", "Checkmate")
+                    menu.msg("Game over! Checkmate, %s won." % (["white", "black"][int(whosTurn(FEN))]), "Checkmate")
                 elif board.is_stalemate :
                     menu.msg("Game over! Stalemate.", "Stalemate")
                 else :
@@ -142,5 +142,16 @@ while True :
 
     elif event[0] == "quit" :
         sys.exit()
+    elif event[0] == "setFEN" :
+        tempFEN = menu.getFEN()
+
+        if not tempFEN == None :
+            FEN = tempFEN
+            
+            selectedX = -1
+            selectedY = -1
+            possibleEndstates = []
+
+            render.redrawScreen(screen, FEN, [selectedX, selectedY], possibleEndstates)
 
     time.sleep(1/maxFPS)
