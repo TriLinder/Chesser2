@@ -14,10 +14,13 @@ FEN = menu.getFEN()
 if FEN == None :
     sys.exit()
 
-gameType = menu.getGameType()
+#gameType = menu.getGameType()
+gameType = False
 
 if gameType == None :
     sys.exit()
+elif gameType == True :
+    isWhite = menu.getColor()
 
 screen = render.init()
 
@@ -74,11 +77,12 @@ if not gameType :
     canPlayOther = True
 
 outcome = None
+specialEvent = None
 
 render.redrawScreen(screen, FEN, [selectedX, selectedY], possibleEndstates)
 
 while True :
-    event = render.frame(screen, FEN, [selectedX, selectedY], possibleEndstates, outcome)
+    event = render.frame(screen, FEN, [selectedX, selectedY], possibleEndstates, specialEvent)
     
     if event[0] == "none" :
         pass
@@ -96,6 +100,22 @@ while True :
             selectedX = -1
             selectedY = -1
             possibleEndstates = []
+
+            if not outcome == None :
+                specialEvent = "quit"
+                render.frame(screen, FEN, [selectedX, selectedY], possibleEndstates, specialEvent)
+                
+                board = chess.Board()
+                board.set_fen(FEN)
+
+                if board.is_checkmate() :
+                    menu.msg("Game over! Checkmate.", "Checkmate")
+                elif board.is_stalemate :
+                    menu.msg("Game over! Stalemate.", "Stalemate")
+                else :
+                    menu.msg("Game over!", "Game over")
+
+                sys.exit()
 
         else :
             selectedX = event[1]

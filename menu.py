@@ -1,7 +1,7 @@
 import PySimpleGUI as sg
 
 def getFEN() :
-    layout = [  [sg.Text('Input a starting FEN String')],
+    layout = [  [sg.Text('Input your starting FEN String')],
             [sg.InputText(default_text="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")],
             [sg.Button('Ok')] ]
 
@@ -40,3 +40,16 @@ def getColor() :
             break
         window.close()
         return event == "Play as white"
+
+def msg(text, title) :
+    layout = [[sg.Text(text)],
+                [sg.Button("Ok")]]
+
+    window = sg.Window(title, layout, no_titlebar=True, grab_anywhere=True, keep_on_top=True)
+
+    while True:
+        event, values = window.read()
+        if event == sg.WIN_CLOSED:
+            window.close()
+            break
+        window.close()

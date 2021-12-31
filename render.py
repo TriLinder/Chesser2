@@ -156,7 +156,7 @@ def redrawScreen(screen, FEN, selected, moves) :
     for move in moves :
         highlightPos(screen, move[0], move[1], (0, 0, 255), 128)
 
-def frame(screen, FEN, selected, moves, outcome) :
+def frame(screen, FEN, selected, moves, specialEvent) :
     w, h = pygame.display.get_surface().get_size()
 
     for event in pygame.event.get():
@@ -180,6 +180,10 @@ def frame(screen, FEN, selected, moves, outcome) :
         pygame.display.set_mode((h,h), RESIZABLE)
 
         redrawScreen(screen, FEN, selected, moves)
+    
+    if specialEvent == "quit" :
+        pygame.quit()
+        return ["quit"]
 
     pygame.display.update()
     return ["none"]
