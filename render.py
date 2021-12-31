@@ -3,10 +3,7 @@ from pathlib import Path
 import pygame
 import chess
 import math
-import time
-import sys
 
-board = chess.Board()
 pygame.init()
 
 #----------------------------------#
@@ -121,13 +118,51 @@ def renderPieces(screen, FEN) : #Another horrible *piece* of code, but once agai
         y += 1
         x = 0
 
-def frame(screen, FEN) :
+def highlightPos(screen, x, y, color, alpha) :
+    monintor = pygame.display.Info()
+
+    w = monintor.current_w
+    h = monintor.current_h
+
+    if w > h :
+        w = int(w / size)
+        h = w
+    else :
+        h = int(h / size)
+        w = h
+
+    cellSize = math.ceil(w / 2.6666)
+
+    s = pygame.Surface((cellSize,cellSize))
+    s.set_alpha(alpha)
+    s.fill(color)
+    screen.blit(s, (int(x*cellSize),int(y*cellSize))) 
+
+def setTitle(FEN) :
+    board = chess.Board()
+    board.set_fen(FEN)
+
+    if board.turn == chess.WHITE :
+        pygame.display.set_caption("Chesser 2 - White's turn to move")
+    else :
+        pygame.display.set_caption("Chesser 2 - Black's turn to move")
+
+def redrawScreen(screen, FEN, selected, moves) :
+    renderChessboard(screen)
+    renderPieces(screen, FEN)
+    highlightPos(screen, selected[0], selected[1], (255, 0, 0), 128)
+    setTitle(FEN)
+
+    for move in moves :
+        highlightPos(screen, move[0], move[1], (0, 0, 255), 128)
+
+def frame(screen, FEN, selected, moves, outcome) :
     w, h = pygame.display.get_surface().get_size()
 
     for event in pygame.event.get():
-        if event.type==QUIT:
+        if event.type == QUIT:
             pygame.quit()
-            sys.exit()
+            return ["quit"]
         elif event.type == pygame.MOUSEBUTTONUP:
             pos = pygame.mouse.get_pos()
             w, h = pygame.display.get_surface().get_size()
@@ -140,14 +175,14 @@ def frame(screen, FEN) :
 
             return ["click", click_x, click_y]
 
-    renderChessboard(screen)
-    renderPieces(screen, FEN)
-
     if not w == h :
         print("Resizing to 1:1")
         pygame.display.set_mode((h,h), RESIZABLE)
 
+        redrawScreen(screen, FEN, selected, moves)
+
     pygame.display.update()
+    return ["none"]
 
 if __name__ == "__main__" :
     FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
